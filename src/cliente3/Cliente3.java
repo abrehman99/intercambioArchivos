@@ -1,6 +1,5 @@
 package cliente3;
 
-// 44c458cdfc0df6bcc40e16c984950870f61df76956c3091209b250114ff7d43d
 import servidorGeneral.*;
 import cliente2.*;
 import hash.*;
@@ -95,6 +94,13 @@ public class Cliente3 {
 				e.printStackTrace();
 			}
 		} else if (opcion.equals("3")) {
+			//1. PEDIR DIRECTORIO, PUERTO Y NOMBRE FICHERO
+			//2. ESTABLECER CONEXION
+			//3. MOSTRAR TABLA Y PEDIR ID ARCHIVO A DESCARGAR
+			//4. ALGORITMO PARA DESCARGAR EL ARCHIVO
+			
+			//1. PEDIR DIRECTORIO, PUERTO Y NOMBRE FICHERO
+			
 			System.out.println("Introduzca el nombre de su directorio");
 			directorio = new File(sc.nextLine());
 			String puerto;
@@ -103,12 +109,13 @@ public class Cliente3 {
 			System.out.println("Introduzca el nombre que tendrá el fichero en local");
 			nombreLocal = sc.nextLine();
 			String puertoDestino = "";
+			//2. ESTABLECER CONEXION
 			try (Socket client = new Socket("localhost", 6666);
 					DataOutputStream out = new DataOutputStream(client.getOutputStream());
 					FileOutputStream outa = new FileOutputStream(directorio + "\\" + nombreLocal);
 					FileInputStream streamIn = new FileInputStream(directorio + "\\.config.txt");
 					ObjectInputStream objectIn = new ObjectInputStream(streamIn);) {
-				// Mostrar ids disponibles
+				//3. MOSTRAR TABLA Y PEDIR ID ARCHIVO A DESCARGAR
 				List<InfoFichero> lista = (List<InfoFichero>) objectIn.readObject();
 				System.out.println("Mostrando ids disponibles: ");
 				for (InfoFichero info : lista) {
@@ -123,11 +130,14 @@ public class Cliente3 {
 					}
 				}
 				int i = 0;
+
 				boolean descargado = false;
+				//4. ALGORITMO PARA DESCARGAR EL ARCHIVO
+				// Se recorre la lista de usuarios del archivo elegido y se usan los puertos en orden de aparición en
+				// 	la lista, si no se puede establecer conexion o si no se confirma la descarga se vuelve a intentar con el
+				//	  siguiente puerto disponible
 				while (i < infoDescarga.getListaUsuarios().size() && puertoDestino.equals("") && !descargado) {
-					System.out.println("puerto de destino before: " + puertoDestino);
 					puertoDestino = infoDescarga.getListaUsuarios().get(i).getPuerto();
-					System.out.println("puerto de destino after: " + puertoDestino);
 					try {
 						Socket clientt2 = new Socket("localhost", Integer.valueOf(puertoDestino));
 						DataInputStream in = new DataInputStream(clientt2.getInputStream());
@@ -156,7 +166,6 @@ public class Cliente3 {
 					}
 					i++;
 				}
-				System.out.println("llega");
 				if (puertoDestino.equals("") || puertoDestino.equals(puerto)) {
 					System.out.println("error al conectar al servidor auxiliar");
 				}
@@ -168,15 +177,6 @@ public class Cliente3 {
 				e.printStackTrace();
 			}
 		}
-//			Calendar init = Calendar.getInstance();
-//			Timer timer = new Timer();
-//			timer.scheduleAtFixedRate(new Tarea1(directorio), init.getTime(), 30000);
-//			System.out.println("Introduzca opcion de nuevo");
-//			System.out.println("Pulse 2 para desconectar");
-//			System.out.println("Pulse 3 para iniciar una descarga");
-//			System.out.println("Pulse 0 para salir");
-//			opcion = sc.nextLine();
-//		}
-		System.out.println("Ha elegido salir");
+		System.out.println("Ejecucion terminada");
 	}
 }

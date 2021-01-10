@@ -34,7 +34,6 @@ public class AtenderPeticion implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(Thread.currentThread().getId());
 		String opcion = this.opcion, nombre, tam, puerto, nombreDirectorio, id;
 		boolean encontrado = false;
 		Long tamL;
@@ -47,16 +46,16 @@ public class AtenderPeticion implements Runnable {
 			br = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
 			bw = new BufferedWriter(new OutputStreamWriter(this.s.getOutputStream()));
 			opcion = br.readLine();
-			System.out.println(opcion);
 			if (opcion.equals("connect") || opcion.equals("getTabla")) {
-
-				// conectar usuario primera vez
 				
 				// añadir a tabla los ficheros que tiene este nuevo cliente
 				if (opcion.equals("connect")) {
 					puerto = br.readLine();
 					nombreDirectorio = br.readLine();
 					numFicheros = Integer.valueOf(br.readLine());
+					// para todos los archivos que aporta el nuevo usuario se revisa si existen o no
+					// si ya están almacenados en la tabla del servidor se añade el usuario a la lista de usuarios
+					// si no existe se crea una nueva entrada en la tabla 
 					for (int i = 0; i < numFicheros; i++) {
 						nombre = br.readLine();
 						Usuario usu = new Usuario(puerto, new File(nombreDirectorio));
@@ -83,23 +82,17 @@ public class AtenderPeticion implements Runnable {
 						encontrado = false;
 					}
 				}
-
-				// devolver la tabla actualizada completa al usuario
+				//Si el codigo es getTabla y no connect se devuelve la tabla
+				//lo usan los actualizadores
 				outObject.writeObject(tabla);
-//				for(InfoFichero info: tabla) {
-//					out.writeBytes(info.getId()+"\r\n");
-//					out.writeBytes(info.getNombre() + "\r\n");
-//					out.writeBytes(info.getListaUsuarios().size()+"\r\n");
-//					for(Usuario usuario: info.getListaUsuarios()) {
-//						out.writeBytes(usuario+"\r\n");
-//					}
-//				}
+
 
 			} else if (opcion.equals("disconnect")) {
 				puerto = br.readLine();
-				System.out.println("puerto: " + puerto);
 				Usuario usu = new Usuario(puerto);
 				List<InfoFichero> borrar = new ArrayList<>();
+				// Se quitan los archivos del usuario que se desconecta si es el único que los tiene, si no se le borra
+				// de la lista de usuarios
 				for (Iterator<InfoFichero> iterator = this.tabla.iterator(); iterator.hasNext();) {
 					InfoFichero info = iterator.next();
 					if (info.getListaUsuarios().size() == 1 && info.getListaUsuarios().get(0).equals(usu)) {
@@ -109,12 +102,8 @@ public class AtenderPeticion implements Runnable {
 					}
 				}
 				this.tabla.removeAll(borrar);
-				System.out.println("mostrando despues de desconectar");
-				for (InfoFichero info : this.tabla) {
-					info.mostrar();
-				}
 			} else if (opcion.equals("update")) {
-				// actualizar info
+				// actualizar info tabla
 				puerto = br.readLine();
 				id = br.readLine();
 				if (puerto != null && !puerto.isEmpty()) {
@@ -128,9 +117,8 @@ public class AtenderPeticion implements Runnable {
 						}
 					}
 				} else {
-					System.out.println("en servidor no llega puerto bien");
+					System.out.println("en servidor no llega bien el puerto");
 				}
-				// outObject.writeObject(this.tabla);
 			} else {
 				System.out.println("en opcion else");
 				for (InfoFichero info : tabla) {
