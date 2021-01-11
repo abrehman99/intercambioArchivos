@@ -62,10 +62,8 @@ Para comprobar desconexión
 
 	Ejecutar ServidorGeneral	
 	Ejecutar Cliente1, Cliente2 con opción conectar
-	Ejecutar Actualizador1
-	Ejecutar Cliente2 y desconectar 
-	Esperar a que actualice el .config de Cliente 1 y comprobar que solo salen los archivos de Cliente1 y sin Cliente2 en la lista de usuarios.
+	Ejecutar Cliente1 y elegir opcion desconectar
+	Ejecutar Cliente3 y ver que no se muestran los archivos de Cliente1 y este no sale en la lista de ningun archivo
 	
-
 
 cualquier duda, sugerencia, corrección, etc. estoy a tu disposición, mi correo: abrehman@unirioja.es
