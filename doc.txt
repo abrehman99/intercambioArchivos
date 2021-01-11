@@ -1,0 +1,71 @@
+NOTAS PREVIAS: 
+
+	-El programa consiste de un Servidor general y todos los clientes que se quieran conectar a la red de intercambio de archivos. 
+		Se llaman clientes pero también hacen de servidor. Cada uno de estos clientes o usuarios tiene 
+		su clase Cliente, su clase Servidor(usa AtenderPeticion) y su clase Actualizador(usa Tarea). 
+		Cada cliente está en un paquete con sus 5 clases. La idea es ejecutar Servidor y Actualizador de antemano y despues ejecutar Cliente para las distintas acciones.
+
+		La clase Cliente es la que se va a usar para conectar/desconectar con el servidor general y para descargar
+		La clase Actualizador se ha de ejecutar para actualizar la tabla del directorio automáticamente(está puesta a 30 segundos para comprobar más fácilmente)
+		La clase Servidor se ha de ejecutar para que los demás usuarios de la red puedan acceder a los archivos de este usuario.
+
+	-Salvo el servidor general en todas las demás ejecuciones hace falta especificar cosas por consola(lo que pida) y también es importante
+		que coincidan los directorios y los puertos, por ejemplo, han de ser el mismo en Cliente1, Servidor1 y Actualizador1.
+
+	-Para hacer las pruebas he usado rutas relativas, concretamente he creado
+		las carpetas Compartidos, Compartidos2 y Compartidos3 en la carpeta del proyecto
+
+	-Las tablas en local se guardan en un fichero que lo he llamado .config.txt, este se crea o bien con los actualizadores o bien a la hora de conectar
+
+INSTRUCCIONES PARA LA EJECUCIÓN DEL PROGRAMA:
+
+	- Ejecutar servidor general
+	- Ejecutar los servidores de los usuarios en los paquetes cliente que se quieran usar. Especificar por consola el directorio y el puerto del servidor
+	- Ejecutar las clases Actualizador de los paquetes cliente que se quieran usar. Especificar por consola el directorio
+	- Ejecutar la clase Cliente correspondiente para realizar operaciones de conexion/desconexion y descarga, especificar por consola directorio
+		 y puerto y en caso de descarga tambien nombre que tendra el fichero y el id (se muestran los disponibles)
+	
+
+	
+PRUEBAS DE FUNCIONAMIENTO
+
+	-Aunque se podría comprobar de muchas maneras distintas, a continuación se concretan algunas pruebas 
+		para comprobar el correcto funcionamiento acorde a los requisitos del guión del aula virtual de años anterioes.
+
+Para comprobar conexión
+
+	Ejecutar ServidorGeneral
+	Ejecutar Cliente1 y elegir opción 1. Conectar
+	Revisar el archivo .config del directorio indicado por consola, tambien se muestra por consola
+	Para comprobar conexión múltiple a la vez conectar Cliente2 y Cliente3 y revisar que se incluyen todos los archivos con los usuarios adecuados
+
+
+Para comprobar actualizador:
+
+	Ejecutar ServidorGeneral
+	Ejecutar Cliente1 y elegir opción 1. Conectar
+	Ejecutar Actualizador1
+	Ejecutar Cliente2 y esperar a que Actualizador vuelva a actualizar
+	El archivo .config ahora contiene la tabla actualizada
+
+Para comprobar descarga
+
+	Ejecutar ServidorGeneral
+	Ejecutar Servidor1, Servidor2, Servidor3
+	Ejecutar y conectar Cliente1, Cliente2 y Cliente3 
+	Ejecutar Actualizador1, Actualizador2, Actualizador3
+	Ejecutar Cliente3, elegir opción 3 e indicar un archivo que no esté en Cliente3
+	Ver que se ha descargado el archivo en el directorio de Cliente3
+	Esperar a que se actualicen los .config y revisar que entre la lista de usuarios del archivo descargado aparece cliente3
+
+Para comprobar desconexión
+
+	Ejecutar ServidorGeneral	
+	Ejecutar Cliente1, Cliente2 con opción conectar
+	Ejecutar Actualizador1
+	Ejecutar Cliente2 y desconectar 
+	Esperar a que actualice el .config de Cliente 1 y comprobar que solo salen los archivos de Cliente1 y sin Cliente2 en la lista de usuarios.
+	
+
+
+cualquier duda, sugerencia, corrección, etc. estoy a tu disposición, mi correo: abrehman@unirioja.es
