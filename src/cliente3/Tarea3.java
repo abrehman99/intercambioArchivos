@@ -19,7 +19,6 @@ public class Tarea3 extends TimerTask {
 		this.directorio = directorio;
 	}
 	public void run() {
-		System.out.println("Actualizando tabla");
 		try (Socket client = new Socket("localhost", 6666);
 				DataOutputStream out = new DataOutputStream(client.getOutputStream());
 				ObjectInputStream inObject = new ObjectInputStream(client.getInputStream());
@@ -27,10 +26,6 @@ public class Tarea3 extends TimerTask {
 						new FileOutputStream(directorio.getName() + "\\.config.txt"));) {
 			out.writeBytes("getTabla" + "\r\n");
 			List<InfoFichero> lista = (List<InfoFichero>) inObject.readObject();
-			System.out.println("mostrando tabla en Tarea");
-			for (InfoFichero info : lista) {
-				info.mostrar();
-			}
 			outObject.writeObject(lista);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
