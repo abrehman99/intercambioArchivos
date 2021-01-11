@@ -27,7 +27,7 @@ public class Pruebas {
 //		info.addUsuario(usu1);
 //		info.mostrar();
 
-
+		
 	}
 
 }
