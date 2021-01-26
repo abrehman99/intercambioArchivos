@@ -43,7 +43,7 @@ public class Cliente2 {
 			conectado = true;
 			System.out.println("Introduzca nombre del directorio");
 			s = sc.nextLine();
-			if (s.isBlank()) {
+			if (s.isEmpty()) {
 				s = "Compartidos2";
 			}
 			directorio = new File(s);
@@ -106,7 +106,7 @@ public class Cliente2 {
 			String puerto;
 			System.out.println("Introduzca su puerto: ");
 			puerto = sc.nextLine();
-			System.out.println("Introduzca el nombre que tendr· el fichero en local");
+			System.out.println("Introduzca el nombre que tendr√° el fichero en local");
 			nombreLocal = sc.nextLine();
 			String puertoDestino = "";
 			//2. ESTABLECER CONEXION
@@ -133,7 +133,7 @@ public class Cliente2 {
 
 				boolean descargado = false;
 				//4. ALGORITMO PARA DESCARGAR EL ARCHIVO
-				// Se recorre la lista de usuarios del archivo elegido y se usan los puertos en orden de apariciÛn en
+				// Se recorre la lista de usuarios del archivo elegido y se usan los puertos en orden de aparici√≥n en
 				// 	la lista, si no se puede establecer conexion o si no se confirma la descarga se vuelve a intentar con el
 				//	  siguiente puerto disponible
 				while (i < infoDescarga.getListaUsuarios().size() && puertoDestino.equals("") && !descargado) {
